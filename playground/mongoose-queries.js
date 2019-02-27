@@ -39,9 +39,8 @@ User.findById(userID).then((user) => {
   if(!user){
     return console.log('User not found');
   }
-  console.log('User:', user);
+  console.log('User:', user);s
 }, (e) => {
   console.log(e);
 });
-
 
