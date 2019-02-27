@@ -10,7 +10,7 @@ const {User: userModel} = require('./models/user');
 let app = express();
 app.use(bodyParser.json());
 
-
+//Routes
 app.post('/todos', (req, res) => {
   let todo = new todoModel({
     text: req.body.text,
@@ -24,6 +24,14 @@ app.post('/todos', (req, res) => {
 });
 });
 
+app.get('/todos', (req, res) => {
+  todoModel.find().then((todos) => {
+    res.send({todos: todos});
+  }, (err) => {
+    res.status(400).send(e);
+  });
+});
+
 
 
 let PORT = 3000;
@@ -35,5 +43,4 @@ app.listen(PORT, () => {
 module.exports = {
   app
 };
-
 
