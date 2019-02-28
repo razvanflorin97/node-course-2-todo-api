@@ -9,6 +9,7 @@ const {User: userModel} = require('./models/user');
 
 //App config
 let app = express();
+const port = process.env.port || 3000;
 app.use(bodyParser.json());
 
 //Routes
@@ -41,7 +42,7 @@ app.get('/todos/:id', (req, res) => {
   }
   todoModel.findById(id).then((todo) => {
     if (!todo){
-      res.status(404).send();
+      return res.status(404).send();
     }
     res.send({todo});
   }).catch(e => {
@@ -50,11 +51,26 @@ app.get('/todos/:id', (req, res) => {
   
 });
 
+app.delete('/todos/:id', (req, res) => {
+  let id = req.params.id;
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+  todoModel.findByIdAndDelete(id).then((todo) => {
+    if (!todo) {
+      return res.status(404).send();
+    }
+    res.send({todo});
+  }).catch(err => {
+    res.status(400).send();
+  });
+});
 
 
-let PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is up on port ${PORT}`);
+
+//let PORT = 3000;
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}`);
 });
 
 
